@@ -1,0 +1,17 @@
+# Automated verification for Week 4 Creational Patterns
+image: maven:3.9-eclipse-temurin-21
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+cache:
+  paths: [.m2/repository]
+
+test_creational_patterns:
+  stage: test
+  script:
+    - mvn clean test --batch-mode
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH =~ /^feature\//'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "m3-creational"'
